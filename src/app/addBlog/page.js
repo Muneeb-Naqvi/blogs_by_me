@@ -1,13 +1,14 @@
-
-
 "use client";
 
 import { useState, useRef, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { CldUploadWidget } from "next-cloudinary";
+import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
-import JoditEditor from "jodit-react";
+
+// Dynamically import the components that require client-side execution
+const CldUploadWidget = dynamic(() => import("next-cloudinary").then(mod => mod.CldUploadWidget), { ssr: false });
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const AddBlogPage = () => {
   const { data: session, status } = useSession();
@@ -233,20 +234,9 @@ const AddBlogPage = () => {
             <div className="flex items-center justify-between gap-4">
               <button
                 type="submit"
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-red-700 to-red-900 text-white rounded-lg hover:from-red-800 hover:to-red-950 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black transition-all duration-300 shadow-lg hover:shadow-red-900/50"
+                className="w-full px-4 py-2 bg-gradient-to-r from-red-700 to-red-900 text-white rounded-lg hover:from-red-800 hover:to-red-950 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black transition-all duration-300 shadow-lg hover:shadow-red-900/50"
               >
-                Add Blog
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setFormData({ name: "", title: "", description: "" });
-                  setTempImages([]);
-                  setError("");
-                }}
-                className="flex-1 px-6 py-3 bg-black/50 text-red-200 rounded-lg border border-red-800/30 hover:bg-red-950/50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black transition-all duration-300"
-              >
-                Clear All
+                Submit Blog
               </button>
             </div>
           </form>
@@ -257,19 +247,3 @@ const AddBlogPage = () => {
 };
 
 export default AddBlogPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
